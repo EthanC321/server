@@ -54,7 +54,7 @@ app.get('/user',(req,res) => {
   }
   };
   res.json({
-    'acess' : access,
+    'acess' : atoken,
     'header' : jwtPayload,
     'head' : authHeader
   })
