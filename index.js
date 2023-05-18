@@ -43,7 +43,7 @@ app.get('/user',(req,res) => {
   console.log(authHeader)
   const atoken = authHeader && authHeader.split(" ")[1];
   if(!atoken){
-    res.send(authHeader)
+    res.json(authHeader)
   }
   console.log(atoken)
     const jwtPayload = jwt.verify(atoken, jwtSecret);
@@ -56,7 +56,7 @@ app.get('/user',(req,res) => {
       'Authorization': 'Bearer ' + access
   }
   };
-  res.send(access)
+  res.json(access)
   //fetch(token,options)
   //.then(response => response.json())
   //.then(data => {
