@@ -50,19 +50,20 @@ app.get('/user',(req,res) => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': 'Bearer ' + atoken
+      'Authorization': 'Bearer ' + access
   }
   };
-  //res.json({
-  //  'atoken' : atoken,
-   // 'header' : jwtPayload
-  //})
-  fetch(token,options)
-  .then(response => response.json())
-  .then(data => {
-    res.json(data);
+  res.json({
+    'atoken' : atoken,
+    'header' : jwtPayload,
+    'head' : authHeader,
   })
-  .catch(err => console.error(err));
+  //fetch(token,options)
+  //.then(response => response.json())
+  //.then(data => {
+   // res.json(data);
+  //})
+  //.catch(err => console.error(err));
 })
 
 app.get('/user/top',(req,res) => {
