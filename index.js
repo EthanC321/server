@@ -56,7 +56,7 @@ app.get('/user',(req,res) => {
       'Authorization': 'Bearer ' + access
   }
   };
-  res.json(access)
+  res.json({'acess' : access})
   //fetch(token,options)
   //.then(response => response.json())
   //.then(data => {
