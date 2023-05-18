@@ -2,11 +2,15 @@
   "name": "spotifyapi",
   "version": "1.0.0",
   "description": "",
-  "main": "spotify.js",
+  "main": "index.js",
   "scripts": {
-    "test": "fetch.js"
+    "test": "fetch.js",
+    "start": "node index.js"
   },
-  "keywords": [],
+  "keywords": [
+    "example",
+    "heroku"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {

@@ -6,18 +6,18 @@ const cookieParser = require("cookie-parser");
 const path  = require('path')
 
 let app = express();
-const router = express.Router();
+//const router = express.Router();
 
 app.use(cors({
   'allowedHeaders': ['sessionId', 'Content-Type'],
   'exposedHeaders': ['sessionId'],
-  'origin': 'http://localhost:3000',
+  'origin': 'https://willowy-meerkat-6bb39e.netlify.app',
   'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
   'preflightContinue': false,
   'credentials': true,
 }));
 app.use(cookieParser())
-app.use(express.static(path.join(__dirname, '/public')));
+//app.use(express.static(path.join(__dirname, '/public')));
 
 const home = "http://localhost:4000"
 const PORT = process.env.PORT || 4000
@@ -30,12 +30,12 @@ var auth
 var user_token_data 
 
 
-router.get('/',  (req,res) => {
+app.get('/',  (req,res) => {
     console.log("got")
     res.send('got')
 })
 
-router.get('/user',(req,res) => {
+app.get('/user',(req,res) => {
   const token = 'https://api.spotify.com/v1/me'
   const access = req.cookies.accessToken
   console.log('access ' + access)
@@ -54,13 +54,13 @@ router.get('/user',(req,res) => {
   .catch(err => console.error(err));
 })
 
-router.get('/user/top',(req,res) => {
+app.get('/user/top',(req,res) => {
   const access = req.cookies.accessToken
   res.redirect('/user/' + access + '/top')
 })
 
 
-router.get('/top',(req,res) => {
+app.get('/top',(req,res) => {
     const token = 'https://api.spotify.com/v1/me/top/artists';
     const access = req.cookies.accessToken
 
@@ -83,11 +83,11 @@ router.get('/top',(req,res) => {
     console.log('failed')});
 })
 
-router.get('/user/:id',(req,res) => {
+app.get('/user/:id',(req,res) => {
   res.send(req.params)
 })
 
-router.get('/callback',(req,res) => {
+app.get('/callback',(req,res) => {
   console.log(state)
   console.log(req.query)
   if(req.query.state == state){
@@ -111,8 +111,8 @@ router.get('/callback',(req,res) => {
     .then(data => {
       user_token_data = data;
       console.log( user_token_data)
-      res.cookie('accessToken', user_token_data.access_token, { httpOnly: true });
-      res.redirect('http://localhost:3000/profile')
+      res.cookie('accessToken', user_token_data.access_token, { httpOnly: true, sameSite: 'none', secure: true });
+      res.redirect('https://willowy-meerkat-6bb39e.netlify.app/profile')
     })
     .catch(error => {
       console.log("callback:" + error)
@@ -124,7 +124,7 @@ router.get('/callback',(req,res) => {
   
 })
 
-router.get('/login',(req,res) => {
+app.get('/login',(req,res) => {
     res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
@@ -151,5 +151,3 @@ function generateRandomString(length) {
 app.listen(PORT,() => {
   console.log('listenting on ' + PORT + '......')
 })
-
-module.exports.handler = ser
