@@ -43,8 +43,8 @@ app.get('/user',(req,res) => {
   console.log(authHeader)
   const atoken = authHeader && authHeader.split(" ")[1];
   console.log(atoken)
-    const jwtPayload = jwt.verify(atoken, jwtSecret);
-    const access = jwtPayload.access_token;
+  const jwtPayload = jwt.verify(atoken, jwtSecret);
+  const access = jwtPayload.access_token;
   console.log('access ' + access)
   const options = {
     method: 'GET',
@@ -53,7 +53,11 @@ app.get('/user',(req,res) => {
       'Authorization': 'Bearer ' + access
   }
   };
-  res.json({'acess' : access})
+  res.json({
+    'acess' : access,
+    'header' : jwtPayload,
+    'head' : authHeader
+  })
   //fetch(token,options)
   //.then(response => response.json())
   //.then(data => {
