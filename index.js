@@ -73,7 +73,7 @@ app.get('/callback',(req,res) => {
 })
 
 app.use(rateLimit({
-  windowMs: 100 * 1000,
+  windowMs: 1 * 1000,
   max: 1
 }))
 
