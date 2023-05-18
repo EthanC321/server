@@ -42,9 +42,6 @@ app.get('/user',(req,res) => {
   const authHeader = req.headers.authorization;
   console.log(authHeader)
   const atoken = authHeader && authHeader.split(" ")[1];
-  if(!atoken){
-    res.json(authHeader)
-  }
   console.log(atoken)
     const jwtPayload = jwt.verify(atoken, jwtSecret);
     const access = jwtPayload.access_token;
