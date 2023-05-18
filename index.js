@@ -24,8 +24,8 @@ const home = "http://localhost:4000"
 const PORT = process.env.PORT || 4000
 
 const client_id = '55f4fa1f3dab45179c7fa8cef3bcb837';
-const jwtSecret =client_secret;
 const client_secret = 'b6e74b093f73427fb04de2ffc0e23ea7';
+const jwtSecret = client_secret;
 var redirect_uri = "https://myspotify.herokuapp.com/callback"
 var state = generateRandomString(16);
 var auth
