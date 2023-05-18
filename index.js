@@ -5,6 +5,7 @@ const Datastore = require('nedb')
 var querystring = require('querystring');
 const cookieParser = require("cookie-parser");
 const path  = require('path')
+const rateLimit = require('express-rate-limit')
 
 let app = express();
 //const router = express.Router();
@@ -19,6 +20,8 @@ app.use(cors({
 }));
 app.use(cookieParser())
 //app.use(express.static(path.join(__dirname, '/public')));
+
+
 
 const home = "http://localhost:4000"
 const PORT = process.env.PORT || 4000
@@ -35,72 +38,6 @@ var user_token_data
 app.get('/',  (req,res) => {
     console.log("got")
     res.send('got')
-})
-
-app.get('/user',(req,res) => {
-  const token = 'https://api.spotify.com/v1/me'
-  const authHeader = req.headers.authorization;
-  console.log(authHeader)
-  const atoken = authHeader && authHeader.split(" ")[1];
-  console.log(atoken)
-  const jwtPayload = jwt.verify(atoken, jwtSecret);
-  const access = jwtPayload.access_token;
-  console.log('access ' + access)
-  const options = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': 'Bearer ' + access
-  }
-  };
-  fetch(token,options)
-  .then(response => response.json())
-  .then(data => {
-    res.json(data);
-  })
-  .catch(err => console.error(err));
-})
-
-app.get('/user/top',(req,res) => {
-  const access = req.cookies.accessToken
-  res.redirect('/user/' + access + '/top')
-})
-
-
-app.get('/top',(req,res) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) {
-      res.status(401).json({error: "No authorization header found."});   
-      return;
-  }
-
-  const atoken = authHeader && authHeader.split(" ")[1];
-  const jwtPayload = jwt.verify(atoken, jwtSecret);
-  const access = jwtPayload.access_token;
-
-  const token = `https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=20&offset=0`;
-
-  const options = {
-      method: 'GET',
-      headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Bearer ' + access
-      }
-  };
-
-  fetch(token, options)
-      .then(response => response.json())
-      .then(data => {
-          res.json(data)
-      })
-      .catch(error => {
-          console.log(error);
-          console.log('failed');
-      });
-})
-
-app.get('/user/:id',(req,res) => {
-  res.send(req.params)
 })
 
 app.get('/callback',(req,res) => {
@@ -138,6 +75,67 @@ app.get('/callback',(req,res) => {
       console.log('callback issue')
     }
   
+})
+
+app.use(rateLimit({
+  windowMs: 1 * 1000,
+  max: 1
+}))
+
+app.get('/user',(req,res) => {
+  const token = 'https://api.spotify.com/v1/me'
+  const authHeader = req.headers.authorization;
+  console.log(authHeader)
+  const atoken = authHeader && authHeader.split(" ")[1];
+  console.log(atoken)
+  const jwtPayload = jwt.verify(atoken, jwtSecret);
+  const access = jwtPayload.access_token;
+  console.log('access ' + access)
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Bearer ' + access
+  }
+  };
+  fetch(token,options)
+  .then(response => response.json())
+  .then(data => {
+    res.json(data);
+  })
+  .catch(err => console.error(err));
+})
+
+app.get('/top',(req,res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+      res.status(401).json({error: "No authorization header found."});   
+      return;
+  }
+
+  const atoken = authHeader && authHeader.split(" ")[1];
+  const jwtPayload = jwt.verify(atoken, jwtSecret);
+  const access = jwtPayload.access_token;
+
+  const token = `https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=20&offset=0`;
+
+  const options = {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Bearer ' + access
+      }
+  };
+
+  fetch(token, options)
+      .then(response => response.json())
+      .then(data => {
+          res.json(data)
+      })
+      .catch(error => {
+          console.log(error);
+          console.log('failed');
+      });
 })
 
 app.get('/login',(req,res) => {
