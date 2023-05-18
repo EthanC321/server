@@ -43,7 +43,7 @@ app.get('/user',(req,res) => {
   console.log(authHeader)
   const atoken = authHeader && authHeader.split(" ")[1];
   if(!atoken){
-    res.json(authHeader)
+    res.send(authHeader)
   }
   console.log(atoken)
     const jwtPayload = jwt.verify(atoken, jwtSecret);
@@ -54,14 +54,15 @@ app.get('/user',(req,res) => {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': 'Bearer ' + access
-    }
+  }
   };
-  fetch(token,options)
-  .then(response => response.json())
-  .then(data => {
-    res.json(data);
-  })
-  .catch(err => console.error(err));
+  res.send(access)
+  //fetch(token,options)
+  //.then(response => response.json())
+  //.then(data => {
+   // res.json(data);
+  //})
+  //.catch(err => console.error(err));
 })
 
 app.get('/user/top',(req,res) => {
