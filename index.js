@@ -8,7 +8,6 @@ const path  = require('path')
 const rateLimit = require('express-rate-limit')
 
 let app = express();
-//const router = express.Router();
 
 app.use(cors({
   'allowedHeaders': ['sessionId', 'Content-Type','Authorization'],
@@ -19,11 +18,7 @@ app.use(cors({
   'credentials': true,
 }));
 app.use(cookieParser())
-//app.use(express.static(path.join(__dirname, '/public')));
 
-
-
-const home = "http://localhost:4000"
 const PORT = process.env.PORT || 4000
 
 const client_id = '55f4fa1f3dab45179c7fa8cef3bcb837';
@@ -78,7 +73,7 @@ app.get('/callback',(req,res) => {
 })
 
 app.use(rateLimit({
-  windowMs: 1 * 1000,
+  windowMs: 100 * 1000,
   max: 1
 }))
 
