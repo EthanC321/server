@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors")
+const jwt = require("jsonwebtoken");
 const Datastore = require('nedb')
 var querystring = require('querystring');
 const cookieParser = require("cookie-parser");
@@ -23,6 +24,7 @@ const home = "http://localhost:4000"
 const PORT = process.env.PORT || 4000
 
 const client_id = '55f4fa1f3dab45179c7fa8cef3bcb837';
+const jwtSecret =client_secret;
 const client_secret = 'b6e74b093f73427fb04de2ffc0e23ea7';
 var redirect_uri = "https://myspotify.herokuapp.com/callback"
 var state = generateRandomString(16);
@@ -37,7 +39,13 @@ app.get('/',  (req,res) => {
 
 app.get('/user',(req,res) => {
   const token = 'https://api.spotify.com/v1/me'
-  const access = req.cookies.accessToken
+  const authHeader = req.headers.authorization;
+  const atoken = authHeader && authHeader.split(" ")[1];
+    if (!atoken) {
+    return res.sendStatus(401);
+    }
+    const jwtPayload = jwt.verify(atoken, jwtSecret);
+    const access = jwtPayload.access_token;
   console.log('access ' + access)
   const options = {
     method: 'GET',
@@ -62,7 +70,13 @@ app.get('/user/top',(req,res) => {
 
 app.get('/top',(req,res) => {
     const token = 'https://api.spotify.com/v1/me/top/artists';
-    const access = req.cookies.accessToken
+    const authHeader = req.headers.authorization;
+    const atoken = authHeader && authHeader.split(" ")[1];
+    if (!atoken) {
+    return res.sendStatus(401);
+    }
+    const jwtPayload = jwt.verify(atoken, jwtSecret);
+    const access = jwtPayload.access_token;
 
     const options = {
       method: 'GET',
@@ -111,8 +125,8 @@ app.get('/callback',(req,res) => {
     .then(data => {
       user_token_data = data;
       console.log( user_token_data)
-      res.cookie('accessToken', user_token_data.access_token, { httpOnly: true, sameSite: 'none', secure: true });
-      res.redirect('https://willowy-meerkat-6bb39e.netlify.app/profile')
+      const jwtToken = jwt.sign({ access_token: user_token_data.access_token }, jwtSecret, { expiresIn: '1h' });
+      res.redirect(`https://willowy-meerkat-6bb39e.netlify.app/profile?jwt=${jwtToken}`);
     })
     .catch(error => {
       console.log("callback:" + error)
