@@ -53,17 +53,12 @@ app.get('/user',(req,res) => {
       'Authorization': 'Bearer ' + access
   }
   };
-  res.json({
-    'atoken' : atoken,
-    'header' : jwtPayload,
-    'head' : authHeader,
+  fetch(token,options)
+  .then(response => response.json())
+  .then(data => {
+    res.json(data);
   })
-  //fetch(token,options)
-  //.then(response => response.json())
-  //.then(data => {
-   // res.json(data);
-  //})
-  //.catch(err => console.error(err));
+  .catch(err => console.error(err));
 })
 
 app.get('/user/top',(req,res) => {
