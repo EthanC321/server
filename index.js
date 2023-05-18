@@ -75,7 +75,7 @@ app.get('/top',(req,res) => {
     const authHeader = req.headers.authorization;
     const atoken = authHeader && authHeader.split(" ")[1];
     if (!atoken) {
-    return res.sendStatus(401);
+    return res.sendStatus(404);
     }
     const jwtPayload = jwt.verify(atoken, jwtSecret);
     const access = jwtPayload.access_token;
