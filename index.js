@@ -10,7 +10,7 @@ let app = express();
 //const router = express.Router();
 
 app.use(cors({
-  'allowedHeaders': ['sessionId', 'Content-Type'],
+  'allowedHeaders': ['sessionId', 'Content-Type','Authorization'],
   'exposedHeaders': ['sessionId'],
   'origin': 'https://willowy-meerkat-6bb39e.netlify.app',
   'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
