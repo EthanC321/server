@@ -11,7 +11,7 @@ let app = express();
 app.use(cors({
   'allowedHeaders': ['sessionId', 'Content-Type'],
   'exposedHeaders': ['sessionId'],
-  'origin': 'https://willowy-meerkat-6bb39e.netlify.app/',
+  'origin': 'https://willowy-meerkat-6bb39e.netlify.app',
   'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
   'preflightContinue': false,
   'credentials': true,
