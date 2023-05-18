@@ -41,9 +41,6 @@ app.get('/user',(req,res) => {
   const token = 'https://api.spotify.com/v1/me'
   const authHeader = req.headers.authorization;
   const atoken = authHeader && authHeader.split(" ")[1];
-    if (!atoken) {
-    return res.sendStatus(401);
-    }
     const jwtPayload = jwt.verify(atoken, jwtSecret);
     const access = jwtPayload.access_token;
   console.log('access ' + access)
