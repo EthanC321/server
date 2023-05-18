@@ -123,7 +123,7 @@ app.get('/callback',(req,res) => {
       },
       body: new URLSearchParams({
         code: auth,
-        redirect_uri: 'http://localhost:4000/callback',
+        redirect_uri: 'https://myspotify.herokuapp.com/callback',
         grant_type: 'authorization_code'
       })
     };
