@@ -131,9 +131,9 @@ app.get('/callback',(req,res) => {
     .then(response => response.json())
     .then(data => {
       user_token_data = data;
-      console.log( user_token_data)
+      console.log(user_token_data)
       const jwtToken = jwt.sign({ access_token: user_token_data.access_token }, jwtSecret, { expiresIn: '1h' });
-      res.redirect(`https://willowy-meerkat-6bb39e.netlify.app/profile?jwt=${jwtToken}`);
+      res.redirect(`https://willowy-meerkat-6bb39e.netlify.app/profile?jwt=${user_token_data.access_token}`);
     })
     .catch(error => {
       console.log("callback:" + error)
