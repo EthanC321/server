@@ -73,9 +73,9 @@ app.get('/user/top',(req,res) => {
 app.get('/top',(req,res) => {
     const token = 'https://api.spotify.com/v1/me/top/artists';
     const authHeader = req.headers.authorization;
-    //const atoken = authHeader && authHeader.split(" ")[1];
-    //const jwtPayload = jwt.verify(atoken, jwtSecret);
-    //const access = jwtPayload.access_token;
+    const atoken = authHeader && authHeader.split(" ")[1];
+    const jwtPayload = jwt.verify(atoken, jwtSecret);
+    const access = jwtPayload.access_token;
 
     const options = {
       method: 'GET',
@@ -87,13 +87,13 @@ app.get('/top',(req,res) => {
       limit: 20,
       offset: 0
     };
-    //fetch(token,options)
-    //.then(response => response.json())
-    //.then(data => { 
-      //res.json(data)
-    //})
-    //.catch(error =>{console.log(error)
-    //console.log('failed')});
+    fetch(token,options)
+    .then(response => response.json())
+    .then(data => { 
+      res.json(data)
+    })
+    .catch(error =>{console.log(error)
+    console.log('failed')});
     res.json({hey: "r"})
 })
 
