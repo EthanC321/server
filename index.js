@@ -53,7 +53,7 @@ app.get('/user',(req,res) => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': 'Bearer  ' + access
+      'Authorization': 'Bearer ' + access
     }
   };
   fetch(token,options)
@@ -73,7 +73,7 @@ app.get('/user/top',(req,res) => {
 app.get('/top',(req,res) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
-      res.status(401).json({error: "No authorization header found."});
+      res.status(401).json({error: "No authorization header found."});   
       return;
   }
 
