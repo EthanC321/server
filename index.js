@@ -180,7 +180,7 @@ app.get('/top', (req, res) => {
     })
     .catch(error => {
       console.log(error);
-      console.log('failed');
+      console.log('fail');
     });
 })
 
