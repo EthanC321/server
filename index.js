@@ -125,6 +125,33 @@ app.get('/track', (req, res) => {
     });
 })
 
+app.get('/artist', (req, res) => {
+  const authHeader = req.headers.authorization;
+  const atoken = authHeader && authHeader.split(" ")[1];
+  const jwtPayload = jwt.verify(atoken, jwtSecret);
+  const access = jwtPayload.access_token;
+  const query = req.query.q
+
+  const token = `https://api.spotify.com/v1/artists/${query}`
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Bearer ' + access
+    }
+  };
+  fetch(token, options)
+    .then(response => response.json())
+    .then(data => {
+      res.json(data)
+    })
+    .catch(error => {
+      console.log(error);
+      console.log('failed');
+    });
+})
+
 app.get('/top', (req, res) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
@@ -191,7 +218,6 @@ app.get('/login', (req, res) => {
       scope: 'user-read-private user-top-read user-read-email user-read-recently-played',
       redirect_uri: redirect_uri,
       state: state,
-      show_dialog: true
     }));
   console.log("redirected")
 })
