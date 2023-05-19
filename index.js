@@ -135,9 +135,7 @@ app.get('/search',(req,res) => {
   const atoken = authHeader && authHeader.split(" ")[1];
   const jwtPayload = jwt.verify(atoken, jwtSecret);
   const access = jwtPayload.access_token;
-  const urlParams = new URLSearchParams(window.location.search);
-  console.log(urlParams)
-  const query = urlParams.get("q");
+  const query = req.query.q
   console.log(query)
   const token = `https://api.spotify.com/v1/search?q=${query}&type=album%2Ctrack`
   const options = {
