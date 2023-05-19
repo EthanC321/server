@@ -150,14 +150,12 @@ app.get('/search',(req,res) => {
   //fetch(token,options)
   //.then(response => response.json())
   //.then(data => {
-      res.json({'query' : query})
+      //res.json({'query' : query})
   //})
-  .catch(error => {
-      console.log(error);
-      console.log('failed');
-  });
-  
-
+  //.catch(error => {
+      //console.log(error);
+      //console.log('failed');
+  //});
 })
 
 app.get('/login',(req,res) => {
