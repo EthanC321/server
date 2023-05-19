@@ -145,15 +145,15 @@ app.get('/search',(req,res) => {
       'Authorization': 'Bearer ' + access
   }
   };
-  //fetch(token,options)
-  //.then(response => response.json())
-  //.then(data => {
-      //res.json({'query' : query})
-  //})
-  //.catch(error => {
-      //console.log(error);
-      //console.log('failed');
-  //});
+  fetch(token,options)
+  .then(response => response.json())
+  .then(data => {
+      res.json(data)
+  })
+  .catch(error => {
+      console.log(error);
+      console.log('failed');
+  });
 })
 
 app.get('/login',(req,res) => {
