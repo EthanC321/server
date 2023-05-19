@@ -145,11 +145,11 @@ app.get('/search',(req,res) => {
       'Authorization': 'Bearer ' + access
   }
   };
-  fetch(token,options)
-  .then(response => response.json())
-  .then(data => {
-      res.json(data)
-  })
+  //fetch(token,options)
+  //.then(response => response.json())
+  //.then(data => {
+      res.json({'query' : query})
+  //})
   .catch(error => {
       console.log(error);
       console.log('failed');
