@@ -80,12 +80,9 @@ app.use(rateLimit({
 app.get('/user',(req,res) => {
   const token = 'https://api.spotify.com/v1/me'
   const authHeader = req.headers.authorization;
-  console.log(authHeader)
   const atoken = authHeader && authHeader.split(" ")[1];
-  console.log(atoken)
   const jwtPayload = jwt.verify(atoken, jwtSecret);
   const access = jwtPayload.access_token;
-  console.log('access ' + access)
   const options = {
     method: 'GET',
     headers: {
@@ -131,6 +128,34 @@ app.get('/top',(req,res) => {
           console.log(error);
           console.log('failed');
       });
+})
+
+app.get('/search',(req,res) => {
+  const authHeader = req.headers.authorization;
+  const atoken = authHeader && authHeader.split(" ")[1];
+  const jwtPayload = jwt.verify(atoken, jwtSecret);
+  const access = jwtPayload.access_token;
+  const urlParams = new URLSearchParams(window.location.search);
+  const query = urlParams.get("q");
+  const token = `https://api.spotify.com/v1/search?q=${query}&type=album%2Ctrack`
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Bearer ' + access
+  }
+  };
+  fetch(token,options)
+  .then(response => response.json())
+  .then(data => {
+      res.json(data)
+  })
+  .catch(error => {
+      console.log(error);
+      console.log('failed');
+  });
+  
+
 })
 
 app.get('/login',(req,res) => {
