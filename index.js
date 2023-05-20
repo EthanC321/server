@@ -152,6 +152,33 @@ app.get('/artist', (req, res) => {
     });
 })
 
+app.get('/album', (req, res) => {
+  const authHeader = req.headers.authorization;
+  const atoken = authHeader && authHeader.split(" ")[1];
+  const jwtPayload = jwt.verify(atoken, jwtSecret);
+  const access = jwtPayload.access_token;
+  const query = req.query.q
+
+  const token = `https://api.spotify.com/v1/albums/${query}`
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Bearer ' + access
+    }
+  };
+  fetch(token, options)
+    .then(response => response.json())
+    .then(data => {
+      res.json(data)
+    })
+    .catch(error => {
+      console.log(error);
+      console.log('failed');
+    });
+})
+
 app.get('/top', (req, res) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
