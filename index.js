@@ -11,15 +11,20 @@ require('dotenv').config()
 
 const DATABASE_URL = process.env.DATABASE_URL
 const CONFIG = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  }
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}
 
 mongoose.connect(DATABASE_URL, CONFIG)
 mongoose.connection
-.on("open", () => console.log("Connected to Mongoose"))
-.on("close", () => console.log("Disconnected from Mongoose"))
-.on("error", (error) => console.log(error))
+  .on("open", () => {
+    console.log("Connected to Mongoose")
+    app.listen(PORT, () => {
+      console.log('listenting on ' + PORT + '......')
+    })
+  })
+  .on("close", () => console.log("Disconnected from Mongoose"))
+  .on("error", (error) => console.log(error))
 
 let app = express();
 
@@ -274,6 +279,4 @@ function generateRandomString(length) {
   return result;
 }
 
-app.listen(PORT, () => {
-  console.log('listenting on ' + PORT + '......')
-})
+
