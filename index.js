@@ -163,7 +163,7 @@ app.post('/track', (req, res) => {
     body: req.body.body,
     trackName: req.nody.trackName,
     trackID: req.body.trackID,
-    userID: jwt.sign(req.body.userID,jwtSecret).id,
+    userID: jwt.sign(req.body.userID, jwtSecret).id,
     rating: req.body.rating
   })
 
@@ -249,24 +249,18 @@ app.get('/album', (req, res) => {
 })
 
 app.post('/album', (req, res) => {
-  //const comment = new AlbumComment({
-   // body: req.body.body,
-   // albumName: req.body.albumName,
-    //albumID: req.body.albumID,
-    //userID: jwt.verify(req.body.userID, jwtSecret).id,
-    //rating: req.body.rating
-  //})
+  const comment = new AlbumComment({
+    
+  })
 
-  res.send(req)
-
-  //comment.save()
-  //.then(() => {
-   // res.sendStatus(200); // Send a success status code
-  //})
-  //.catch((error) => {
-   // console.error('Error saving comment:', error);
-   // res.sendStatus(500); // Send an error status code
-  //});
+  comment.save()
+    .then(() => {
+      res.sendStatus(200); // Send a success status code
+    })
+    .catch((error) => {
+      console.error('Error saving comment:', error);
+      res.sendStatus(500); // Send an error status code
+    });
 
 })
 
