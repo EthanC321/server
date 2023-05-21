@@ -7,6 +7,9 @@ const cookieParser = require("cookie-parser");
 const path = require('path')
 const rateLimit = require('express-rate-limit')
 const mongoose = require('mongoose')
+const ArtistComment = require('./models/Artist_Comment')
+const AlbumComment = require('./models/Album_Comment')
+const TrackComment = require('./models/Track_Comment')
 require('dotenv').config()
 
 const DATABASE_URL = process.env.DATABASE_URL
@@ -25,7 +28,7 @@ mongoose.connection
   })
   .on("close", () => console.log("Disconnected from Mongoose"))
   .on("error", (error) => console.log(error))
-
+  
 let app = express();
 
 app.use(cors({
