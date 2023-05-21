@@ -6,6 +6,21 @@ var querystring = require('querystring');
 const cookieParser = require("cookie-parser");
 const path = require('path')
 const rateLimit = require('express-rate-limit')
+const mongoose = require('mongoose')
+require('dotenv').config()
+
+const DATABASE_URL = process.env.DATABASE_URL
+const CONFIG = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
+
+
+mongoose.connect(DATABASE_URL, CONFIG)
+mongoose.connection
+.on("open", () => console.log("Connected to Mongoose"))
+.on("close", () => console.log("Disconnected from Mongoose"))
+.on("error", (error) => console.log(error))
 
 let app = express();
 
