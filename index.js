@@ -256,7 +256,7 @@ app.post('/album', (req, res) => {
     //rating: req.body.rating
   //})
 
-  res.send(req.body.body)
+  res.send(req)
 
   //comment.save()
   //.then(() => {
