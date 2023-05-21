@@ -256,7 +256,15 @@ app.post('/album', (req, res) => {
     rating: req.body.rating
   })
 
-  comment.save();
+  comment.save()
+  .then(() => {
+    res.sendStatus(200); // Send a success status code
+  })
+  .catch((error) => {
+    console.error('Error saving comment:', error);
+    res.sendStatus(500); // Send an error status code
+  });
+
 })
 
 app.get('/top', (req, res) => {
