@@ -253,7 +253,7 @@ app.get('/album', (req, res) => {
 
 app.post('/album', (req, res) => {
   const comment = new AlbumComment({
-    
+    body : req.body.body
   })
 
   comment.save()
