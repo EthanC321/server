@@ -6,6 +6,7 @@ var querystring = require('querystring');
 const cookieParser = require("cookie-parser");
 const path = require('path')
 const rateLimit = require('express-rate-limit')
+var bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const ArtistComment = require('./models/Artist_Comment')
 const AlbumComment = require('./models/Album_Comment')
@@ -41,7 +42,9 @@ app.use(cors({
   'credentials': true,
 }));
 app.use(cookieParser())
-app.use(express.json())
+//app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json()) 
 
 const PORT = process.env.PORT || 4000
 
