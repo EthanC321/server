@@ -9,7 +9,8 @@ const rateLimit = require('express-rate-limit')
 const mongoose = require('mongoose')
 const ArtistComment = require('./models/Artist_Comment')
 const AlbumComment = require('./models/Album_Comment')
-const TrackComment = require('./models/Track_Comment')
+const TrackComment = require('./models/Track_Comment');
+const comment = require("./models/Artist_Comment");
 require('dotenv').config()
 
 const DATABASE_URL = process.env.DATABASE_URL
@@ -28,7 +29,7 @@ mongoose.connection
   })
   .on("close", () => console.log("Disconnected from Mongoose"))
   .on("error", (error) => console.log(error))
-  
+
 let app = express();
 
 app.use(cors({
@@ -114,7 +115,11 @@ app.get('/user', (req, res) => {
   fetch(token, options)
     .then(response => response.json())
     .then(data => {
-      res.json(data);
+      const userid = jwt.sign({ id: data.id }, jwtSecret, { expiresIn: '1h' })
+      res.json({
+        body: data,
+        id: userid
+      });
     })
     .catch(err => console.error(err));
 })
@@ -138,12 +143,30 @@ app.get('/track', (req, res) => {
   fetch(token, options)
     .then(response => response.json())
     .then(data => {
-      res.json(data)
+      TrackComment.find()
+        .then(comments => {
+          res.json({
+            data: data,
+            comments: comments
+          })
+        })
     })
     .catch(error => {
       console.log(error);
       console.log('failed');
     });
+})
+
+app.post('/track', (req, res) => {
+  const comment = new TrackComment({
+    body: req.body.body,
+    trackName: req.nody.trackName,
+    trackID: req.body.trackID,
+    userID: jwt.sign(req.body.userID,jwtSecret).id,
+    rating: req.body.rating
+  })
+
+  comment.save()
 })
 
 app.get('/artist', (req, res) => {
@@ -165,12 +188,30 @@ app.get('/artist', (req, res) => {
   fetch(token, options)
     .then(response => response.json())
     .then(data => {
-      res.json(data)
+      ArtistComment.find()
+        .then(comments => {
+          res.json({
+            data: data,
+            comments: comments
+          })
+        })
     })
     .catch(error => {
       console.log(error);
       console.log('failed');
     });
+})
+
+app.post('/artist', (req, res) => {
+  const comment = new ArtistComment({
+    body: req.body.body,
+    artistName: req.body.artistName,
+    artistID: req.body.artistID,
+    userID: jwt.verify(req.body.userID, jwtSecret).id,
+    rating: req.body.rating
+  })
+
+  comment.save();
 })
 
 app.get('/album', (req, res) => {
@@ -192,12 +233,30 @@ app.get('/album', (req, res) => {
   fetch(token, options)
     .then(response => response.json())
     .then(data => {
-      res.json(data)
+      AlbumComment.find()
+        .then(comments => {
+          res.json({
+            data: data,
+            comments: comments
+          })
+        })
     })
     .catch(error => {
       console.log(error);
       console.log('failed');
     });
+})
+
+app.post('/album', (req, res) => {
+  const comment = new AlbumComment({
+    body: req.body.body,
+    albumName: req.body.albumName,
+    albumID: req.body.albumID,
+    userID: jwt.verify(req.body.userID, jwtSecret).id,
+    rating: req.body.rating
+  })
+
+  comment.save();
 })
 
 app.get('/top', (req, res) => {
