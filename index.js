@@ -248,13 +248,13 @@ app.get('/album', (req, res) => {
 })
 
 app.post('/album', (req, res) => {
-  const comment = new AlbumComment({
-    body: req.body.body,
-    albumName: req.body.albumName,
-    albumID: req.body.albumID,
-    userID: jwt.verify(req.body.userID, jwtSecret).id,
-    rating: req.body.rating
-  })
+  //const comment = new AlbumComment({
+   // body: req.body.body,
+   // albumName: req.body.albumName,
+    //albumID: req.body.albumID,
+    //userID: jwt.verify(req.body.userID, jwtSecret).id,
+    //rating: req.body.rating
+  //})
 
   res.send(req.body)
 
