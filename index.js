@@ -48,7 +48,6 @@ var state = generateRandomString(16);
 var auth
 var user_token_data
 
-
 app.get('/', (req, res) => {
   console.log("got")
   res.send('got')
